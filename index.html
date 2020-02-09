@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- You are beautiful, you know that ? -->
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="robot" content="index, nofollow">
+		<title>Kraken API Interface</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script src="js/script.js" type="module"></script>
+	</head>
+	<body>
+		<div class="grid-container mapper">
+			<section class="documentation-container mapper">
+				<h2>What are we doing here ?</h2>
+				<a href="https://github.com/picleb/KrakenWebSocketsClientTS" target="_blank">Check the code on the GitHub repository.</a>
+			</section>
+			<section class="screen-container mapper">
+				<h2>Messages sent / received</h2>
+				<div id="websockets-results-container"></div>
+			</section>
+			<section class="terminal-container mapper">
+				<div class="text-container" id="terminal-text-container">
+					<h1><a href="https://github.com/picleb/KrakenWebSocketsClientTS" target="_blank">Welcome to this WebSockets experiment using the Kraken WebSockets API (beta).</a></h1>
+					<p>Do you mind saying <label for="terminal-command-input" class="pre" onclick="document.getElementById('terminal-command-input').value='Hello'">Hello</label> so I know you are here ?</p>
+				</div>
+				<form action="#" method="post" class="form-command" id="terminal-form-command">
+					<label>
+						<span>BeautifulPerson:~$</span>
+						<input type="text" name="terminal-command" id="terminal-command-input" class="terminal-input" placeholder="Type your command here :)">
+					</label>
+					
+				</form>
+			</section>
+		</div>
+	</body>
+</html>
