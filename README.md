@@ -3,6 +3,8 @@ A simple interface to connect to a WebSocket in the broswer and send basic comma
 
 Just for fun and learning purposes.
 
+You can see it in action [on the GitHub page](https://picleb.github.io/KrakenWebSocketsClientTS/public).
+
 ## Technologies used
 - NPM as package manager
 - Grunt as task runner

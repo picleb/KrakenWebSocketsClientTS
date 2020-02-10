@@ -16,6 +16,14 @@ class KrakenApi{
 	private addEventsListener(self: KrakenApi): void {
 		this.socket.addEventListener('open', function () {
 			self.terminal.writeHtml('WebSockets connection opened');
+			self.terminal.writeJson(`{
+				"binaryType": "${self.socket.binaryType}",
+				"bufferedAmount": "${self.socket.bufferedAmount}",
+				"extensions ": "${self.socket.extensions}",
+				"protocol": "${self.socket.protocol}",
+				"readyState": "${self.socket.readyState}",
+				"url": "${self.socket.url}"
+			}`);
 		});
 
 		this.socket.addEventListener('message', function (event) {
