@@ -34,6 +34,20 @@ input, button, textarea, select, optgroup, option {
 input, button, textarea, select {
   font-size: 100%; }
 
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration,
+input[type=search]::-webkit-search-results-button,
+input[type=search]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  -moz-appearance: none; }
+
+input[type=search] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box; }
+
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
   display: block; }
 
@@ -61,13 +75,18 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold; }
 
-a:active, a:visited {
-  color: #000;
-  text-decoration: underline;
-  transition: .3s; }
+a {
+  color: #000; }
+  a:active, a:visited {
+    color: #000;
+    text-decoration: underline;
+    transition: .3s; }
 
 a:hover, a:focus {
   color: #226; }
+
+a:focus {
+  outline: thin dotted; }
 
 a.current {
   text-shadow: 0px 0px 5px #226; }
@@ -152,7 +171,7 @@ a.current {
   grid-template-columns: 42% 58%;
   grid-gap: 0rem;
   grid-auto-flow: row;
-  grid-auto-rows: minmax(10rem, 50%);
+  grid-auto-rows: minmax(17em, 50%);
   min-width: 500px; }
   .grid-container h2 {
     font-size: 1.2rem; }

@@ -8,6 +8,23 @@ h1,h2,h3,h4,h5,h6{font-size:100%}
 abbr,acronym{border:0;font-variant:normal}
 input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit}
 input,button,textarea,select{font-size:100%}
+
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration,
+input[type=search]::-webkit-search-results-button,
+input[type=search]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+input[type=search] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{display:block;}
 
 audio:not([controls]){display:none;height:0;}
@@ -34,13 +51,15 @@ body{
 h1, h2, h3, h4, h5, h6{font-weight:bold;}
 
 a{
+	color:$link-color;
 	&:active, &:visited{
 		color:$link-color;
 		text-decoration:underline;
 		transition:.3s;
 	}
 }
-a:hover, a:focus{color:$link-color-focus}
+a:hover, a:focus{color:$link-color-focus;}
+a:focus{outline:thin dotted;}
 a.current{text-shadow:0px 0px 5px $link-color-shadow;}
 
 .visible{z-index:10;opacity:1;}
