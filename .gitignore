@@ -12,3 +12,5 @@ node_modules/
 
 # Typescript cache
 .tscache
+public/js/.BaseDir.js
+public/js/.BaseDir.js.map

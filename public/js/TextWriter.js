@@ -1,7 +1,7 @@
 class TextWriter {
     constructor(destinationId) {
         this.textDestinationContainer = undefined;
-        this.animationDelay = 40;
+        this.animationDelay = 50;
         this.htmlWrapperTag = 'p';
         this.setDestination(destinationId);
     }
@@ -32,11 +32,7 @@ class TextWriter {
         let targetElement;
         if (typeof text == 'object') {
             for (var x in text) {
-                targetElement = this.getTargetElement();
-                for (let i = 0; i < text[x].length; i++) {
-                    await this.sleepAnimationDelay(animationMultiplier);
-                    this.writeHtmlChar(text[x].charAt(i), targetElement);
-                }
+                await this.writeHtml(text[x], animationMultiplier);
             }
         }
         else {
@@ -46,6 +42,12 @@ class TextWriter {
                 this.writeHtmlChar(text.charAt(i), targetElement);
             }
         }
+    }
+    async skipAnimation() {
+        let delay = this.animationDelay;
+        this.animationDelay = 0;
+        await new Promise(r => setTimeout(r, delay));
+        this.animationDelay = delay;
     }
     writeHtmlChar(char, target) {
         target.insertAdjacentHTML('beforeend', `<span>${char}</span>`);
@@ -59,6 +61,9 @@ class TextWriter {
         this.textDestinationContainer.parentElement.scrollTop = this.textDestinationContainer.parentElement.scrollHeight;
     }
     sleepAnimationDelay(multiplier = 1) {
+        if (this.animationDelay * multiplier == 0) {
+            return true;
+        }
         return new Promise(resolve => setTimeout(resolve, this.animationDelay * multiplier));
     }
 }

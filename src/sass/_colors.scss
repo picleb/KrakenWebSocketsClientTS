@@ -1,17 +1,19 @@
 //General colors
-$body-bg:#eee;
-$link-color:#226;
-$link-color-focus:#000;
-$link-color-shadow:#000;
+$body-bg: #eee;
+$link-color: #000;
+$link-color-focus: #226;
+$link-color-shadow: #226;
 
 //Documentation colors
 
 
-//Screen colors
-
+//Results colors
+$result-server-color: #191919;
+$result-client-color: #05bb05;
 
 //Terminal colors
-$terminal-bg:#001;
-$terminal-color:#05bb05;
-$terminal-label-color:#e05007;
-$terminal-caret-color:#05bb05;
+$terminal-bg: #001;
+$terminal-color: #05bb05;
+$terminal-label-color: #e05007;
+$terminal-caret-color: #05bb05;
+$terminal-pre-bg: rgba(255, 255, 255, .1);

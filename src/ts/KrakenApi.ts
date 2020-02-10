@@ -5,7 +5,7 @@ class KrakenApi{
 	private socketUri: string = 'wss://beta-ws.kraken.com';
 	private terminal: TextWriter;
 	private jsonDestinationContainer: HTMLElement = undefined;
-	private allowedCommands: Array<string> = ["ping", "subscribe", "unsubscribe"];
+	private allowedCommands: Array<string> = ["ping", "subscribe", "unsubscribe", "addOrder", "cancelOrder"];
 
 	constructor(writer: TextWriter, jsonDestinationId: string) {
 		console.log('KrakenAPI instanciated');
@@ -19,9 +19,7 @@ class KrakenApi{
 		});
 
 		this.socket.addEventListener('message', function (event) {
-			console.log('Message from server ', event.data);
-			self.terminal.writeJson(event.data);
-			self.addResult(event.data);
+			self.messageReceived(event.data);
 		});
 
 		this.socket.addEventListener('close', function () {
@@ -30,7 +28,28 @@ class KrakenApi{
 
 		this.socket.addEventListener('error', function (event) {
 			console.log('WebSocket Error:  ', event);
+			self.terminal.writeHtml('WebSocket Error', 0);
+			self.terminal.writeJson(event);
 		});
+	}
+
+	private messageReceived(data: any) {
+		console.log('Message from server: ', data);
+		this.terminal.writeJson(data);
+		this.addResult(data, 'server');
+	}
+
+	private sendMessage(message: string): void {
+		if(!this.socket || this.socket.readyState != 1) {
+			this.terminal.writeHtml('The socket is not open !', 0);
+			return;
+		}
+
+		let command = {"event":message};
+		let jsonMessage: string = JSON.stringify(command);
+		this.terminal.writeHtml('Sending command...');
+		this.addResult(jsonMessage, 'client');
+		this.socket.send(jsonMessage);
 	}
 
 	public submitCommand(form: HTMLElement) {
@@ -50,38 +69,30 @@ class KrakenApi{
 			this.closeSocket();
 		}
 		else {
-			this.terminal.writeHtml("This command is invalid. But let's send it all the same...", 0);
+			this.terminal.writeHtml("This command is invalid. But let's try it all the same...");
 			this.sendMessage(command);
 		}
 		input.value = '';
 
 	}
 
-	private sendMessage(message: string) {
-		if(!this.socket || this.socket.readyState != 1) {
-			this.terminal.writeHtml('The socket is not open ! Try "open" or "connect" first.', 0);
-			return;
+	public openSocket(): void {
+		if(this.checkSocketOpen()) {
+			this.terminal.writeHtml('The socket is already open you potato.');
 		}
-
-		let command = {"event":message};
-		let jsonMessage = JSON.stringify(command);
-		this.terminal.writeHtml('Sending command...');
-		this.addResult(jsonMessage);
-		this.socket.send(jsonMessage);
-	}
-
-	public openSocket() {
-		this.terminal.writeHtml('Connecting to Kraken Websockets API...');
-		this.socket = new WebSocket(this.socketUri);
-		this.addEventsListener(this);
+		else{
+			this.terminal.writeHtml('Connecting to Kraken Websockets API...');
+			this.socket = new WebSocket(this.socketUri);
+			this.addEventsListener(this);
+		}
+		
 	}
 
 	public checkSocketOpen(): boolean {
 		let socketState: boolean = false;
 		if(this.socket && this.socket.readyState == 1)
 			socketState = true;
-		else
-			this.terminal.writeHtml('The socket is not open ! Try "open" or "connect" first.', 0);
+
 		return socketState;
 	}
 
@@ -90,10 +101,16 @@ class KrakenApi{
 			this.terminal.writeHtml('Disconnecting...');
 			this.socket.close();
 		}
+		else{
+			this.terminal.writeHtml('The socket is not open !', 0);
+		}
 	}
 
-	private addResult(text: string) {
-		this.jsonDestinationContainer.insertAdjacentHTML('afterbegin', '<pre>' + text + '</pre>');
+	private addResult(text: string, sender: string) {
+		text = JSON.parse(text);
+		text = JSON.stringify(text, null, 2);
+
+		this.jsonDestinationContainer.insertAdjacentHTML('afterbegin', '<pre onclick="this.classList.toggle(`open`);" class="result-' + sender + '">' + text + '</pre>');
 	}
 }
 

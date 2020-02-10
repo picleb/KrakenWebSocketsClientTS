@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: 'src/sass/',
 					src: ['*.scss'],
-					dest: 'css/',
+					dest: 'public/css/',
 					ext: '.css',
 				}]
 			}
@@ -24,9 +24,9 @@ module.exports = function(grunt) {
 			target: {
 				files: [{
 					expand: true,
-					cwd: 'css',
+					cwd: 'public/css',
 					src: ['*.css', '!*.min.css'],
-					dest: '',
+					dest: 'public/css',
 					ext: '.min.css',
 				}]
 			}
@@ -38,20 +38,13 @@ module.exports = function(grunt) {
 				rootDir: "src/ts"
 			},
 			default : {
-				tsconfig: './tsconfig.json',
-				/*files: [{
-					expand: true,
-					cwd: 'src/ts',
-					src: ["*.ts"],
-					//dest: 'js',
-					ext: '.js',
-				}]*/
+				tsconfig: './tsconfig.json'
 			}
 		},
 		uglify: {
 			build: {
-				src: ['js/*.js'],
-				dest: 'js/script.min.js',
+				src: ['public/js/*.js'],
+				dest: 'public/js/script.min.js',
 			}
 		},
 
@@ -59,16 +52,12 @@ module.exports = function(grunt) {
 		watch: {
 			css: {
 				files: 'src/**/*.scss',
-				tasks: ['sass'/*, 'cssmin'*/],
+				tasks: ['sass'],
 			},
 			ts: {
 				files: 'src/**/*.ts',
 				tasks: ['ts'],
-			}/*,
-			js: {
-				files: 'src/js/*.js',
-				tasks: ['uglify'],
-			}*/
+			}
 		}
 	});
 

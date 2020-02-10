@@ -4,18 +4,13 @@ import { KrakenApi } from './KrakenApi.js';
 let terminal: TextWriter = null;
 let kraken: KrakenApi = null;
 
-function initialize(): void{
-	terminal = new TextWriter(`terminal-text-container`);
-
-	document.getElementById('terminal-form-command').addEventListener('submit', submitCommand);
-}
-
 function submitCommand(event): void {
 	event.preventDefault();
 
 	let input = event.srcElement.querySelector('input[type="text"]');
 
 	if(kraken) {
+		terminal.skipAnimation();
 		kraken.submitCommand(event.srcElement);
 	}
 	else if((input.value == 'hello' || input.value == 'Hello')) {
@@ -28,10 +23,16 @@ function submitCommand(event): void {
 		]);
 		input.value = '';
 	}
+	else{
+		terminal.writeHtml(`Ok no Hello for me :'(`);
+		input.value = 'Hello';
+	}
 }
 
 window.onload = function() {
-	initialize();
+	terminal = new TextWriter(`terminal-text-container`);
+
+	document.getElementById('terminal-form-command').addEventListener('submit', submitCommand);
 };
 
 

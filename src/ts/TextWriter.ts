@@ -1,13 +1,14 @@
 class TextWriter{
 	private textDestinationContainer: HTMLElement = undefined;
-	private animationDelay: number = 40;
-	private htmlWrapperTag: string = 'p';
+	private animationDelay: number = 50;	//Sleep delay after writing a character during the animation
+	private htmlWrapperTag: string = 'p';	//HTML tag used to wrap characters during the animation
+	
 
 	constructor(destinationId: string) {
 		this.setDestination(destinationId);
 	}
 
-	public setDestination(destinationId: string): void {
+	private setDestination(destinationId: string): void {
 		this.textDestinationContainer = document.getElementById(destinationId);
 		console.log(`TextWriter destination is set to ${destinationId}`);
 	}
@@ -23,7 +24,7 @@ class TextWriter{
 		return targetElement;
 	}
 
-	public async writeJson(text: string|JSON, animationMultiplier:number = 0.4) {
+	public async writeJson(text: string|JSON|Event, animationMultiplier:number = 0.4) {
 		if(typeof text == 'string')
 			text = JSON.parse(text);
 
@@ -38,18 +39,12 @@ class TextWriter{
 		}
 	}
 
-	//FIXME improve this. Either a function for writing arrays, or a condition to go to the next item after the previous one is over
 	public async writeHtml(text: string|Array<string>, animationMultiplier:number = 1) {
 		let targetElement: HTMLElement;
 
 		if(typeof text == 'object') {
 			for(var x in text) {
-				targetElement = this.getTargetElement();
-				for(let i = 0; i < text[x].length; i++) {
-					await this.sleepAnimationDelay(animationMultiplier);
-
-					this.writeHtmlChar(text[x].charAt(i), targetElement);
-				}
+				await this.writeHtml(text[x], animationMultiplier);
 			}
 		}
 		else {
@@ -60,6 +55,13 @@ class TextWriter{
 				this.writeHtmlChar(text.charAt(i), targetElement);
 			}
 		}
+	}
+
+	public async skipAnimation() {
+		let delay = this.animationDelay;
+		this.animationDelay = 0;
+		await new Promise(r => setTimeout(r, delay));
+		this.animationDelay = delay;
 	}
 
 	private writeHtmlChar(char: string, target: HTMLElement) {
@@ -77,6 +79,9 @@ class TextWriter{
 	}
 
 	private sleepAnimationDelay(multiplier: number = 1) {
+		if(this.animationDelay * multiplier == 0) {
+			return true;
+		}
 		return new Promise(resolve => setTimeout(resolve, this.animationDelay * multiplier));
 	}
 }

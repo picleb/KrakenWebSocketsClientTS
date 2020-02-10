@@ -62,15 +62,15 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold; }
 
 a:active, a:visited {
-  color: #226;
+  color: #000;
   text-decoration: underline;
   transition: .3s; }
 
 a:hover, a:focus {
-  color: #000; }
+  color: #226; }
 
 a.current {
-  text-shadow: 0px 0px 5px #000; }
+  text-shadow: 0px 0px 5px #226; }
 
 .visible {
   z-index: 10;
@@ -151,18 +151,47 @@ a.current {
   display: grid;
   grid-template-columns: 42% 58%;
   grid-gap: 0rem;
-  grid-auto-rows: minmax(10rem, auto);
+  grid-auto-flow: row;
+  grid-auto-rows: minmax(10rem, 50%);
   min-width: 500px; }
+  .grid-container h2 {
+    font-size: 1.2rem; }
+  .grid-container pre, .grid-container .pre {
+    font-family: "monospace", serif;
+    font-size: 0.9em;
+    display: inline-block;
+    white-space: pre;
+    background: rgba(255, 255, 255, 0.1); }
 
 .documentation-container {
   grid-column: 1 / 2;
-  grid-row: 1; }
+  grid-row: 1;
+  padding: 0.5rem 0.5rem 0.25rem; }
+  .documentation-container p {
+    margin: 0.6em 0; }
+    .documentation-container p .pre {
+      display: inline;
+      white-space: normal; }
 
 .screen-container {
   grid-column: 1;
-  grid-row: 2; }
+  grid-row: 2;
+  padding: 0.25rem 0.5rem 0.5rem;
+  max-height: 100%;
+  width: 100%; }
   .screen-container pre {
-    display: bloc; }
+    white-space: nowrap;
+    display: block;
+    font-size: 0.82em;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow-x: hidden; }
+    .screen-container pre.open {
+      white-space: pre; }
+  .screen-container .result-server {
+    color: #191919; }
+  .screen-container .result-client {
+    color: #e05007; }
 
 .terminal-container {
   grid-column: 2;
@@ -176,12 +205,8 @@ a.current {
     color: inherit; }
     .terminal-container a:focus, .terminal-container a:hover {
       text-shadow: 0 0 0.1em #05bb05; }
-  .terminal-container pre, .terminal-container .pre {
-    font-family: "monospace";
-    font-size: 0.9rem;
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.1);
-    white-space: pre; }
+  .terminal-container pre {
+    display: block; }
   .terminal-container .text-container, .terminal-container .form-command {
     display: inline-block;
     width: 100%;
