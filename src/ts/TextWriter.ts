@@ -45,7 +45,7 @@ class TextWriter{
 	 * inside a <pre> HTML element.
 	 *
 	 * @remarks
-	 * You can only use this function to write JSON like content.
+	 * You can only use this method to write JSON like content.
 	 *
 	 * @param text - A JSON or JSON like element to write in the page
 	 * @param animationMultiplier - Allows yo to speed up or slow down the speed of the animation
@@ -70,7 +70,7 @@ class TextWriter{
 	 * Write any string or array of strings in the target HTMLElement or the TextWriter
 	 *
 	 * @remarks
-	 * You can use this function to write any kind of content. All chars are going to be wrapped in a <span>
+	 * You can use this method to write any kind of content. All chars are going to be wrapped in a <span>
 	 *
 	 * @param text - A string or array of strings to write in the page
 	 * @param animationMultiplier - Allows yo to speed up or slow down the speed of the animation

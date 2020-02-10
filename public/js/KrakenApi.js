@@ -8,16 +8,16 @@ class KrakenApi {
         this.jsonDestinationContainer = document.getElementById(jsonDestinationId);
     }
     addEventsListener(self) {
-        this.socket.addEventListener('open', function () {
+        this.socket.addEventListener('open', () => {
             self.terminal.write('WebSockets connection opened');
         });
-        this.socket.addEventListener('message', function (event) {
+        this.socket.addEventListener('message', event => {
             self.messageReceived(event.data);
         });
-        this.socket.addEventListener('close', function () {
+        this.socket.addEventListener('close', () => {
             self.terminal.write('WebSockets connection closed');
         });
-        this.socket.addEventListener('error', function (event) {
+        this.socket.addEventListener('error', event => {
             console.log('WebSocket Error:  ', event);
             self.terminal.write('WebSocket Error', 0);
             self.terminal.writeJson(event);
