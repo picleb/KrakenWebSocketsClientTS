@@ -1,9 +1,9 @@
 class KrakenApi {
     constructor(writer, jsonDestinationId) {
         this.socketUri = 'wss://beta-ws.kraken.com';
-        this.jsonDestinationContainer = undefined;
-        this.allowedCommands = ["ping", "subscribe", "unsubscribe", "addOrder", "cancelOrder"];
-        console.log('KrakenAPI instanciated');
+        this.allowedCommands = [
+            "ping", "subscribe", "unsubscribe", "addOrder", "cancelOrder"
+        ];
         this.terminal = writer;
         this.jsonDestinationContainer = document.getElementById(jsonDestinationId);
     }
@@ -24,7 +24,6 @@ class KrakenApi {
         });
     }
     messageReceived(data) {
-        console.log('Message from server: ', data);
         this.terminal.writeJson(data);
         this.addResult(data, 'server');
     }

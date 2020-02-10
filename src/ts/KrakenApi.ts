@@ -1,18 +1,34 @@
 import { TextWriter } from './TextWriter.js';
 
 class KrakenApi{
-	private socket: WebSocket;
-	private socketUri: string = 'wss://beta-ws.kraken.com';
-	private terminal: TextWriter;
-	private jsonDestinationContainer: HTMLElement = undefined;
-	private allowedCommands: Array<string> = ["ping", "subscribe", "unsubscribe", "addOrder", "cancelOrder"];
+	private socket: WebSocket;						// The WebSocket element
+	private socketUri: string = 'wss://beta-ws.kraken.com';	//URI Address to connect to
+	private terminal: TextWriter;					//The TypeWriter class. Used like a console.log in this project
+	private jsonDestinationContainer: HTMLElement;	//The HTMLElement in which we write any message sent or received
+	private allowedCommands: Array<string> = [		//List of allowed commands by the server
+		"ping", "subscribe", "unsubscribe", "addOrder", "cancelOrder"
+	];
 
+	/**
+	 * KrakenApi's constructor. We set the TextWriter and the messages container
+	 *
+	 * @remarks
+	 * You can use this function to write any kind of content. All chars are going to be wrapped in a <span>
+	 *
+	 * @param text - A string or array of strings to write in the page
+	 * @param animationMultiplier - Allows yo to speed up or slow down the speed of the animation
+	 * @returns a Promise
+	 */
 	constructor(writer: TextWriter, jsonDestinationId: string) {
-		console.log('KrakenAPI instanciated');
 		this.terminal = writer;
 		this.jsonDestinationContainer = document.getElementById(jsonDestinationId);
 	}
 
+	/**
+	 * Register the eventListeners for any event liked to the WebSocket
+	 *
+	 * @param self - The KrakenApi instance
+	 */
 	private addEventsListener(self: KrakenApi): void {
 		this.socket.addEventListener('open', function () {
 			self.terminal.write('WebSockets connection opened');
@@ -33,12 +49,22 @@ class KrakenApi{
 		});
 	}
 
-	private messageReceived(data: any) {
-		console.log('Message from server: ', data);
+	/**
+	 * Called when a message is received, will write the data in
+	 * the terminal and JSon container in the html page
+	 *
+	 * @param data - the event.data received from the server
+	 */
+	private messageReceived(data: any): void {
 		this.terminal.writeJson(data);
 		this.addResult(data, 'server');
 	}
 
+	/**
+	 * Insert message in a JSON element and send it through the socket
+	 *
+	 * @param message - The command typed by the user
+	 */
 	private sendMessage(message: string): void {
 		if(!this.socket || this.socket.readyState != 1) {
 			this.terminal.write('The socket is not open !', 0);
@@ -52,7 +78,13 @@ class KrakenApi{
 		this.socket.send(jsonMessage);
 	}
 
-	public submitCommand(form: HTMLElement) {
+	/**
+	 * Called when the form containing the input command written by the user
+	 * is submitted. We check the vailidity of the command and take action
+	 *
+	 * @param form - The HTML form submited by the user
+	 */
+	public submitCommand(form: HTMLElement): void {
 		let command: string = null;
 		event.preventDefault();
 		let input = <HTMLInputElement>form.querySelector('input[type="text"]');
@@ -79,6 +111,9 @@ class KrakenApi{
 
 	}
 
+	/**
+	 * Open the socket connection
+	 */
 	public openSocket(): void {
 		if(this.checkSocketOpen()) {
 			this.terminal.write('The socket is already open you potato.');
@@ -90,6 +125,14 @@ class KrakenApi{
 		}
 	}
 
+	/**
+	 * Check if the socket is open
+	 *
+	 * @remarks
+	 * Will only tell you if the socket is open (readyState == 1) or not (all other case)
+	 *
+	 * @returns true if the socket is open, false otherwise
+	 */
 	public checkSocketOpen(): boolean {
 		let socketState: boolean = false;
 		if(this.socket && this.socket.readyState == 1)
@@ -98,6 +141,9 @@ class KrakenApi{
 		return socketState;
 	}
 
+	/**
+	 * Close the socket if there is one opened
+	 */
 	public closeSocket(): void {
 		if(this.checkSocketOpen()) {
 			this.terminal.write('Disconnecting...');
@@ -108,6 +154,11 @@ class KrakenApi{
 		}
 	}
 
+	/**
+	 * Gives various informations about the socket connection
+	 *
+	 * @returns a JSON string containing the attributs of the socket element
+	 */
 	public getConnectionInfos(): string {
 		let connectionInfos: string = `{"error": "Oops. Something bad happened :("}`;
 		if(this.socket) {
@@ -127,7 +178,13 @@ class KrakenApi{
 		return connectionInfos;
 	}
 
-	private addResult(text: string, sender: string) {
+	/**
+	 * Write the result of a command sent or a message received in the HTML page
+	 *
+	 * @param text - A JSON string to write
+	 * @param sender - "client" or "server" according to whom the message is from
+	 */
+	private addResult(text: string, sender: string): void {
 		text = JSON.parse(text);
 		text = JSON.stringify(text, null, 2);
 
