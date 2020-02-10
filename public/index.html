@@ -14,8 +14,8 @@
 			<section class="documentation-container mapper">
 				<h2>What are we doing here ?</h2>
 				<p>Connecting to a WebSocket server, sending and receiving data. Just a little pratice for some HTML5 and CSS3 features, and of course TypeScript. It's overkill for this project, but a little practice goes a long way...</p>
-				<p>You can use the following commands: <span class="pre">open|connect, ping, subscribe, unsubscribe, addOrder, cancelOrder, close|disconnect</span>.</p>
-				<p>Anything you type after Hello, will be sent to the server in a JSON message <span class="pre">{"event":YourCommand}</span>.</p><br>
+				<p>You can use the following commands: <span class="pre">open|connect, infos|socketInfos, ping, subscribe, unsubscribe, addOrder, cancelOrder, close|disconnect|exit</span>.</p>
+				<p>Actual commands, will be sent to the server in a JSON message <span class="pre">{"event":YourCommand}</span>. Others like <span class="pre">infos</span> or <span class="pre">close</span> won't send any message.</p><br>
 				<p>You can have a look at <a href="https://github.com/picleb/KrakenWebSocketsClientTS" target="_blank">the code on the GitHub repository</a>.</p>
 				<p>The <a href="https://picleb.github.io/KrakenWebSocketsClientTS/public" target="_blank">GitHub page URL</a> for this project.</p>
 				<p>Check out the <a href="https://docs.kraken.com/websockets-beta/#message-addOrder" target="_blank">Kraken WebSockets API documentation here</a>.</p>

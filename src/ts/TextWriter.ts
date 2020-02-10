@@ -4,15 +4,31 @@ class TextWriter{
 	private htmlWrapperTag: string = 'p';	//HTML tag used to wrap characters during the animation
 	
 
+	/**
+	 * TextWriter's constructor
+	 *
+	 * @param destinationId - Html id tag of element we will write into
+	 */
 	constructor(destinationId: string) {
 		this.setDestination(destinationId);
 	}
 
+	/**
+	 * Set the texts destination Element in this.textDestinationContainer
+	 *
+	 * @param destinationId - Html id tag of element we will write into
+	 */
 	private setDestination(destinationId: string): void {
 		this.textDestinationContainer = document.getElementById(destinationId);
 		console.log(`TextWriter destination is set to ${destinationId}`);
 	}
 
+	/**
+	 * Create a wrapper element for the string to write and
+	 * returns the HTMLElement we will actually write into.
+	 *
+	 * @returns HTMLElement that will receive the text to write
+	 */
 	private getTargetElement(): HTMLElement {
 		let targetElement: HTMLElement = this.textDestinationContainer;
 
@@ -24,7 +40,18 @@ class TextWriter{
 		return targetElement;
 	}
 
-	public async writeJson(text: string|JSON|Event, animationMultiplier:number = 0.4) {
+	/**
+	 * Allow you to write a JSON element from a JSON argument or a string
+	 * inside a <pre> HTML element.
+	 *
+	 * @remarks
+	 * You can only use this function to write JSON like content.
+	 *
+	 * @param text - A JSON or JSON like element to write in the page
+	 * @param animationMultiplier - Allows yo to speed up or slow down the speed of the animation
+	 * @returns a Promise
+	 */
+	public async writeJson(text: string|JSON|Event, animationMultiplier:number = 0.4): Promise<any> {
 		if(typeof text == 'string')
 			text = JSON.parse(text);
 
@@ -39,12 +66,22 @@ class TextWriter{
 		}
 	}
 
-	public async writeHtml(text: string|Array<string>, animationMultiplier:number = 1) {
+	/**
+	 * Write any string or array of strings in the target HTMLElement or the TextWriter
+	 *
+	 * @remarks
+	 * You can use this function to write any kind of content. All chars are going to be wrapped in a <span>
+	 *
+	 * @param text - A string or array of strings to write in the page
+	 * @param animationMultiplier - Allows yo to speed up or slow down the speed of the animation
+	 * @returns a Promise
+	 */
+	public async write(text: string|Array<string>, animationMultiplier:number = 1): Promise<any> {
 		let targetElement: HTMLElement;
 
 		if(typeof text == 'object') {
 			for(var x in text) {
-				await this.writeHtml(text[x], animationMultiplier);
+				await this.write(text[x], animationMultiplier);
 			}
 		}
 		else {
@@ -57,28 +94,71 @@ class TextWriter{
 		}
 	}
 
-	public async skipAnimation() {
+	/**
+	 * Temporarily disable animations. Use this to finish writing immeditely
+	 * anything that is currently being written.
+	 *
+	 * @returns a Promise
+	 */
+	public async skipAnimation(): Promise<any> {
 		let delay = this.animationDelay;
 		this.animationDelay = 0;
 		await new Promise(r => setTimeout(r, delay));
 		this.animationDelay = delay;
 	}
 
+	/**
+	 * Write one character wrapped in a <span> inside the targeted element 
+	 * and makes sure the container is scrolled all the way down.
+	 *
+	 * @remarks
+	 * Maybe you should adapt the scroll behavior this to your text container ?
+	 *
+	 * @param char - A character to write
+	 * @param target - Where the character has to be written
+	 * @returns a Promise
+	 */
 	private writeHtmlChar(char: string, target: HTMLElement) {
 		target.insertAdjacentHTML('beforeend', `<span>${char}</span>`);
 		this.scrollDown();
 	}
 
+	/**
+	 * Write one character inside the targeted element 
+	 * and makes sure the container is scrolled all the way down.
+	 *
+	 * @remarks
+	 * Maybe you should adapt the scroll behavior this to your text container ?
+	 *
+	 * @param char - A character to write
+	 * @param target - Where the character has to be written
+	 * @returns a Promise
+	 */
 	private writeChar(char: string, target: HTMLElement) {
 		target.insertAdjacentText('beforeend', `${char}`);
 		this.scrollDown();
 	}
 
+	/**
+	 * Scrolls the parent of the text destination container all the way down
+	 *
+	 * @remarks
+	 * Maybe you should adapt the scroll behavior this to your text container ?
+	 */
 	private scrollDown() {
 		this.textDestinationContainer.parentElement.scrollTop = this.textDestinationContainer.parentElement.scrollHeight;
 	}
 
-	private sleepAnimationDelay(multiplier: number = 1) {
+	/**
+	 * Sleeps by this.animationDelay * multiplier milliseconds
+	 *
+	 * @remarks
+	 * If this.animationDelay * multiplier = 0, we skip the Sleep / setTimeout / Promise thing
+	 *
+	 * @param multiplier - A multiplier to speed up or slow down the animation
+	 * @returns true we skip the animation or a Promise
+	 */
+	private sleepAnimationDelay(multiplier: number = 1): boolean|Promise<any> {
 		if(this.animationDelay * multiplier == 0) {
 			return true;
 		}

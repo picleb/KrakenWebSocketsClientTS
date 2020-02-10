@@ -28,11 +28,11 @@ class TextWriter {
             this.writeChar(text.charAt(i), targetElement);
         }
     }
-    async writeHtml(text, animationMultiplier = 1) {
+    async write(text, animationMultiplier = 1) {
         let targetElement;
         if (typeof text == 'object') {
             for (var x in text) {
-                await this.writeHtml(text[x], animationMultiplier);
+                await this.write(text[x], animationMultiplier);
             }
         }
         else {

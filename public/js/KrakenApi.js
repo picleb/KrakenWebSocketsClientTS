@@ -9,25 +9,17 @@ class KrakenApi {
     }
     addEventsListener(self) {
         this.socket.addEventListener('open', function () {
-            self.terminal.writeHtml('WebSockets connection opened');
-            self.terminal.writeJson(`{
-				"binaryType": "${self.socket.binaryType}",
-				"bufferedAmount": "${self.socket.bufferedAmount}",
-				"extensions ": "${self.socket.extensions}",
-				"protocol": "${self.socket.protocol}",
-				"readyState": "${self.socket.readyState}",
-				"url": "${self.socket.url}"
-			}`);
+            self.terminal.write('WebSockets connection opened');
         });
         this.socket.addEventListener('message', function (event) {
             self.messageReceived(event.data);
         });
         this.socket.addEventListener('close', function () {
-            self.terminal.writeHtml('WebSockets connection closed');
+            self.terminal.write('WebSockets connection closed');
         });
         this.socket.addEventListener('error', function (event) {
             console.log('WebSocket Error:  ', event);
-            self.terminal.writeHtml('WebSocket Error', 0);
+            self.terminal.write('WebSocket Error', 0);
             self.terminal.writeJson(event);
         });
     }
@@ -38,12 +30,12 @@ class KrakenApi {
     }
     sendMessage(message) {
         if (!this.socket || this.socket.readyState != 1) {
-            this.terminal.writeHtml('The socket is not open !', 0);
+            this.terminal.write('The socket is not open !', 0);
             return;
         }
         let command = { "event": message };
         let jsonMessage = JSON.stringify(command);
-        this.terminal.writeHtml('Sending command...');
+        this.terminal.write('Sending command...');
         this.addResult(jsonMessage, 'client');
         this.socket.send(jsonMessage);
     }
@@ -52,28 +44,31 @@ class KrakenApi {
         event.preventDefault();
         let input = form.querySelector('input[type="text"]');
         command = input.value;
-        this.terminal.writeHtml(command);
+        this.terminal.write(command);
         if (this.allowedCommands.indexOf(command) >= 0) {
             this.sendMessage(command);
         }
         else if (command == 'open' || command == 'connect') {
             this.openSocket();
         }
-        else if (command == 'close' || command == 'disconnect') {
+        else if (command == 'close' || command == 'disconnect' || command == 'exit') {
             this.closeSocket();
         }
+        else if (command == 'infos' || command == 'socketInfos') {
+            this.terminal.writeJson(this.getConnectionInfos());
+        }
         else {
-            this.terminal.writeHtml("This command is invalid. But let's try it all the same...");
+            this.terminal.write("This command is invalid. But let's try it all the same...");
             this.sendMessage(command);
         }
         input.value = '';
     }
     openSocket() {
         if (this.checkSocketOpen()) {
-            this.terminal.writeHtml('The socket is already open you potato.');
+            this.terminal.write('The socket is already open you potato.');
         }
         else {
-            this.terminal.writeHtml('Connecting to Kraken Websockets API...');
+            this.terminal.write('Connecting to Kraken Websockets API...');
             this.socket = new WebSocket(this.socketUri);
             this.addEventsListener(this);
         }
@@ -86,12 +81,29 @@ class KrakenApi {
     }
     closeSocket() {
         if (this.checkSocketOpen()) {
-            this.terminal.writeHtml('Disconnecting...');
+            this.terminal.write('Disconnecting...');
             this.socket.close();
         }
         else {
-            this.terminal.writeHtml('The socket is not open !', 0);
+            this.terminal.write('The socket is not open !', 0);
         }
+    }
+    getConnectionInfos() {
+        let connectionInfos = `{"error": "Oops. Something bad happened :("}`;
+        if (this.socket) {
+            connectionInfos = `{
+				"binaryType": "${this.socket.binaryType}",
+				"bufferedAmount": "${this.socket.bufferedAmount}",
+				"extensions ": "${this.socket.extensions}",
+				"protocol": "${this.socket.protocol}",
+				"readyState": "${this.socket.readyState}",
+				"url": "${this.socket.url}"
+			}`;
+        }
+        else {
+            connectionInfos = `{"error": "The socket is undefined you potato. Did you open one ?"}`;
+        }
+        return connectionInfos;
     }
     addResult(text, sender) {
         text = JSON.parse(text);
