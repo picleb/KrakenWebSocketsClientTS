@@ -3,7 +3,7 @@ import { TextWriter } from './TextWriter.js';
 class KrakenApi{
 	private socket: WebSocket;						// The WebSocket element
 	private socketUri: string = 'wss://beta-ws.kraken.com';	//URI Address to connect to
-	private term: TextWriter;					//The TypeWriter class. Used like a console.log in this project
+	private terminal: TextWriter;					//The TypeWriter class. Used like a console.log in this project
 	private jsonDestinationContainer: HTMLElement;	//The HTMLElement in which we write any message sent or received
 	private allowedCommands: Array<string> = [		//List of allowed commands by the server
 		'ping', 'subscribe', 'unsubscribe', 'addOrder', 'cancelOrder'
@@ -20,7 +20,7 @@ class KrakenApi{
 	 * @returns a Promise
 	 */
 	constructor(writer: TextWriter, jsonDestinationId: string) {
-		this.term = writer;
+		this.terminal = writer;
 		this.jsonDestinationContainer = document.getElementById(jsonDestinationId);
 	}
 
@@ -31,7 +31,7 @@ class KrakenApi{
 	 */
 	private addEventsListener(self: KrakenApi): void {
 		this.socket.addEventListener('open', () => {
-			self.term.write('WebSockets connection opened');
+			self.terminal.write('WebSockets connection opened');
 		});
 
 		this.socket.addEventListener('message', event => {
@@ -39,13 +39,13 @@ class KrakenApi{
 		});
 
 		this.socket.addEventListener('close', () => {
-			self.term.write('WebSockets connection closed');
+			self.terminal.write('WebSockets connection closed');
 		});
 
 		this.socket.addEventListener('error', event => {
 			console.log('WebSocket Error:  ', event);
-			self.term.write('WebSocket Error', 0);
-			self.term.writeJson(event);
+			self.terminal.write('WebSocket Error', 0);
+			self.terminal.writeJson(event);
 		});
 	}
 
@@ -56,7 +56,7 @@ class KrakenApi{
 	 * @param data - the event.data received from the server
 	 */
 	private messageReceived(data: any): void {
-		this.term.writeJson(data);
+		this.terminal.writeJson(data);
 		this.addResult(data, 'server');
 	}
 
@@ -67,13 +67,13 @@ class KrakenApi{
 	 */
 	private sendMessage(message: string): void {
 		if(!this.socket || this.socket.readyState != 1) {
-			this.term.write('The socket is not open !', 0);
+			this.terminal.write('The socket is not open !', 0);
 			return;
 		}
 
 		const command = {event:message};
 		const jsonMessage: string = JSON.stringify(command);
-		this.term.write('Sending command...');
+		this.terminal.write('Sending command...');
 		this.addResult(jsonMessage, 'client');
 		this.socket.send(jsonMessage);
 	}
@@ -89,7 +89,7 @@ class KrakenApi{
 		const input = <HTMLInputElement>form.querySelector('input[type="text"]');
 		const command: string = input.value;
 
-		this.term.write(command);
+		this.terminal.write(command);
 
 		if(this.allowedCommands.indexOf(command) >= 0) {
 			this.sendMessage(command);
@@ -101,10 +101,10 @@ class KrakenApi{
 			this.closeSocket();
 		}
 		else if(command == 'infos' || command == 'socketInfos') {
-			this.term.writeJson(this.getConnectionInfos());
+			this.terminal.writeJson(this.getConnectionInfos());
 		}
 		else {
-			this.term.write('This command is invalid. But let\'s try it all the same...');
+			this.terminal.write('This command is invalid. But let\'s try it all the same...');
 			this.sendMessage(command);
 		}
 
@@ -116,10 +116,10 @@ class KrakenApi{
 	 */
 	public openSocket(): void {
 		if(this.checkSocketOpen()) {
-			this.term.write('The socket is already open you potato.');
+			this.terminal.write('The socket is already open you potato.');
 		}
 		else{
-			this.term.write('Connecting to Kraken Websockets API...');
+			this.terminal.write('Connecting to Kraken Websockets API...');
 			this.socket = new WebSocket(this.socketUri);
 			this.addEventsListener(this);
 		}
@@ -146,11 +146,11 @@ class KrakenApi{
 	 */
 	public closeSocket(): void {
 		if(this.checkSocketOpen()) {
-			this.term.write('Disconnecting...');
+			this.terminal.write('Disconnecting...');
 			this.socket.close();
 		}
 		else{
-			this.term.write('The socket is not open !', 0);
+			this.terminal.write('The socket is not open !', 0);
 		}
 	}
 
