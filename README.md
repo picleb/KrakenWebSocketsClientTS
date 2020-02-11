@@ -15,9 +15,14 @@ You can see it in action [on the project's GitHub page](https://picleb.github.io
 
 ## Developer's informations
 Run `npm install` to install development dependencies
+
 Run `npm run watch` to start watch tasks (watch for TypeScript, JavaScript and Sass changes). Builds development assets.
+
 Run `npm run prod` to build assets for production use
 
+
 TypeScript documentation: https://www.typescriptlang.org/docs/home.html
+
 Kraken WebSockets API documentation: https://docs.kraken.com/websockets-beta
+
 MDN documentation for the WebSocket Web API: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
