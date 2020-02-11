@@ -4,10 +4,10 @@ import { KrakenApi } from './KrakenApi.js';
 let terminal: TextWriter = null;
 let kraken: KrakenApi = null;
 
-function submitCommand(event): void {
+const submitForm = function submitCommand(event): void {
 	event.preventDefault();
 
-	let input = event.srcElement.querySelector('input[type="text"]');
+	const input = event.srcElement.querySelector('input[type="text"]');
 
 	if(kraken) {
 		terminal.skipAnimation();
@@ -29,10 +29,10 @@ function submitCommand(event): void {
 	}
 }
 
-window.onload = function() {
+window.onload = () => {
 	terminal = new TextWriter(`terminal-text-container`);
 
-	document.getElementById('terminal-form-command').addEventListener('submit', submitCommand);
+	document.getElementById('terminal-form-command').addEventListener('submit', submitForm);
 };
 
 

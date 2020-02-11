@@ -6,7 +6,7 @@ class KrakenApi{
 	private terminal: TextWriter;					//The TypeWriter class. Used like a console.log in this project
 	private jsonDestinationContainer: HTMLElement;	//The HTMLElement in which we write any message sent or received
 	private allowedCommands: Array<string> = [		//List of allowed commands by the server
-		"ping", "subscribe", "unsubscribe", "addOrder", "cancelOrder"
+		'ping', 'subscribe', 'unsubscribe', 'addOrder', 'cancelOrder'
 	];
 
 	/**
@@ -71,8 +71,8 @@ class KrakenApi{
 			return;
 		}
 
-		let command = {"event":message};
-		let jsonMessage: string = JSON.stringify(command);
+		const command = {event:message};
+		const jsonMessage: string = JSON.stringify(command);
 		this.terminal.write('Sending command...');
 		this.addResult(jsonMessage, 'client');
 		this.socket.send(jsonMessage);
@@ -85,10 +85,10 @@ class KrakenApi{
 	 * @param form - The HTML form submited by the user
 	 */
 	public submitCommand(form: HTMLElement): void {
-		let command: string = null;
 		event.preventDefault();
-		let input = <HTMLInputElement>form.querySelector('input[type="text"]');
-		command = input.value;
+		const input = <HTMLInputElement>form.querySelector('input[type="text"]');
+		const command: string = input.value;
+
 		this.terminal.write(command);
 
 		if(this.allowedCommands.indexOf(command) >= 0) {
@@ -104,11 +104,11 @@ class KrakenApi{
 			this.terminal.writeJson(this.getConnectionInfos());
 		}
 		else {
-			this.terminal.write("This command is invalid. But let's try it all the same...");
+			this.terminal.write('This command is invalid. But let\'s try it all the same...');
 			this.sendMessage(command);
 		}
-		input.value = '';
 
+		input.value = '';
 	}
 
 	/**
@@ -157,22 +157,22 @@ class KrakenApi{
 	/**
 	 * Gives various informations about the socket connection
 	 *
-	 * @returns a JSON string containing the attributs of the socket element
+	 * @returns a JSON formatted string containing the attributs of the socket element
 	 */
 	public getConnectionInfos(): string {
-		let connectionInfos: string = `{"error": "Oops. Something bad happened :("}`;
+		let connectionInfos: string = '{"error": "Oops. Something bad happened :("}';
 		if(this.socket) {
 			connectionInfos = `{
 				"binaryType": "${this.socket.binaryType}",
 				"bufferedAmount": "${this.socket.bufferedAmount}",
-				"extensions ": "${this.socket.extensions}",
+				"extensions": "${this.socket.extensions}",
 				"protocol": "${this.socket.protocol}",
 				"readyState": "${this.socket.readyState}",
 				"url": "${this.socket.url}"
 			}`;
 		}
 		else {
-			connectionInfos = `{"error": "The socket is undefined you potato. Did you open one ?"}`;
+			connectionInfos = '{"error": "The socket is undefined you potato. Did you open one ?"}';
 		}
 
 		return connectionInfos;
@@ -185,10 +185,10 @@ class KrakenApi{
 	 * @param sender - "client" or "server" according to whom the message is from
 	 */
 	private addResult(text: string, sender: string): void {
-		text = JSON.parse(text);
-		text = JSON.stringify(text, null, 2);
+		let toWrite = JSON.parse(text);
+		toWrite = JSON.stringify(toWrite, null, 2);
 
-		this.jsonDestinationContainer.insertAdjacentHTML('afterbegin', '<pre onclick="this.classList.toggle(`open`);" class="result-' + sender + '">' + text + '</pre>');
+		this.jsonDestinationContainer.insertAdjacentHTML('afterbegin', `<pre onclick="this.classList.toggle('open');" class="result-${sender}">${toWrite}</pre>`);
 	}
 }
 

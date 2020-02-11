@@ -2,9 +2,9 @@ import { TextWriter } from './TextWriter.js';
 import { KrakenApi } from './KrakenApi.js';
 let terminal = null;
 let kraken = null;
-function submitCommand(event) {
+const submitForm = function submitCommand(event) {
     event.preventDefault();
-    let input = event.srcElement.querySelector('input[type="text"]');
+    const input = event.srcElement.querySelector('input[type="text"]');
     if (kraken) {
         terminal.skipAnimation();
         kraken.submitCommand(event.srcElement);
@@ -23,8 +23,8 @@ function submitCommand(event) {
         terminal.write(`Ok no Hello for me :'(`);
         input.value = 'Hello';
     }
-}
-window.onload = function () {
+};
+window.onload = () => {
     terminal = new TextWriter(`terminal-text-container`);
-    document.getElementById('terminal-form-command').addEventListener('submit', submitCommand);
+    document.getElementById('terminal-form-command').addEventListener('submit', submitForm);
 };

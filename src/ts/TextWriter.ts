@@ -52,17 +52,19 @@ class TextWriter{
 	 * @returns a Promise
 	 */
 	public async writeJson(text: string|JSON|Event, animationMultiplier:number = 0.4): Promise<any> {
-		if(typeof text == 'string')
-			text = JSON.parse(text);
+		let toWrite: string|JSON|Event = text;
 
-		text = JSON.stringify(text, null, 2);
+		if(typeof toWrite == 'string')
+			toWrite = JSON.parse(toWrite);
+
+		toWrite = JSON.stringify(toWrite, null, 2);
 		this.textDestinationContainer.insertAdjacentHTML('beforeend', '<pre></pre>');
-		let targetElement: HTMLElement = this.textDestinationContainer.querySelector('pre:last-of-type');
+		const targetElement: HTMLElement = this.textDestinationContainer.querySelector('pre:last-of-type');
 
-		for(let i = 0; i < text.length; i++) {
+		for(let i = 0; i < toWrite.length; i++) {
 			await this.sleepAnimationDelay(animationMultiplier);
 
-			this.writeChar(text.charAt(i), targetElement);
+			this.writeChar(toWrite.charAt(i), targetElement);
 		}
 	}
 
@@ -77,19 +79,19 @@ class TextWriter{
 	 * @returns a Promise
 	 */
 	public async write(text: string|Array<string>, animationMultiplier:number = 1): Promise<any> {
-		let targetElement: HTMLElement;
-
-		if(typeof text == 'object') {
-			for(var x in text) {
-				await this.write(text[x], animationMultiplier);
+		let toWrite: string|Array<string> = text;
+		if(typeof toWrite == 'object') {
+			for(var x in toWrite) {
+				await this.write(toWrite[x], animationMultiplier);
 			}
 		}
 		else {
-			targetElement = this.getTargetElement();
-			for(let i = 0; i < text.length; i++) {
+			const targetElement: HTMLElement = this.getTargetElement();
+
+			for(let i = 0; i < toWrite.length; i++) {
 				await this.sleepAnimationDelay(animationMultiplier);
 
-				this.writeHtmlChar(text.charAt(i), targetElement);
+				this.writeHtmlChar(toWrite.charAt(i), targetElement);
 			}
 		}
 	}
@@ -101,7 +103,7 @@ class TextWriter{
 	 * @returns a Promise
 	 */
 	public async skipAnimation(): Promise<any> {
-		let delay = this.animationDelay;
+		const delay = this.animationDelay;
 		this.animationDelay = 0;
 		await new Promise(r => setTimeout(r, delay));
 		this.animationDelay = delay;

@@ -68,9 +68,7 @@ html, body {
   overflow-y: hidden; }
 
 body {
-  overflow-y: scroll;
-  width: 100%;
-  height: 100%; }
+  overflow-y: auto; }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold; }
@@ -171,7 +169,7 @@ a.current {
   grid-template-columns: 42% 58%;
   grid-gap: 0rem;
   grid-auto-flow: row;
-  grid-auto-rows: minmax(17em, 50%);
+  grid-auto-rows: minmax(21em, 50%);
   min-width: 500px; }
   .grid-container h2 {
     font-size: 1.2rem; }

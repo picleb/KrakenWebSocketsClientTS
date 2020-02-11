@@ -2,7 +2,7 @@ class KrakenApi {
     constructor(writer, jsonDestinationId) {
         this.socketUri = 'wss://beta-ws.kraken.com';
         this.allowedCommands = [
-            "ping", "subscribe", "unsubscribe", "addOrder", "cancelOrder"
+            'ping', 'subscribe', 'unsubscribe', 'addOrder', 'cancelOrder'
         ];
         this.terminal = writer;
         this.jsonDestinationContainer = document.getElementById(jsonDestinationId);
@@ -32,17 +32,16 @@ class KrakenApi {
             this.terminal.write('The socket is not open !', 0);
             return;
         }
-        let command = { "event": message };
-        let jsonMessage = JSON.stringify(command);
+        const command = { event: message };
+        const jsonMessage = JSON.stringify(command);
         this.terminal.write('Sending command...');
         this.addResult(jsonMessage, 'client');
         this.socket.send(jsonMessage);
     }
     submitCommand(form) {
-        let command = null;
         event.preventDefault();
-        let input = form.querySelector('input[type="text"]');
-        command = input.value;
+        const input = form.querySelector('input[type="text"]');
+        const command = input.value;
         this.terminal.write(command);
         if (this.allowedCommands.indexOf(command) >= 0) {
             this.sendMessage(command);
@@ -57,7 +56,7 @@ class KrakenApi {
             this.terminal.writeJson(this.getConnectionInfos());
         }
         else {
-            this.terminal.write("This command is invalid. But let's try it all the same...");
+            this.terminal.write('This command is invalid. But let\'s try it all the same...');
             this.sendMessage(command);
         }
         input.value = '';
@@ -88,26 +87,26 @@ class KrakenApi {
         }
     }
     getConnectionInfos() {
-        let connectionInfos = `{"error": "Oops. Something bad happened :("}`;
+        let connectionInfos = '{"error": "Oops. Something bad happened :("}';
         if (this.socket) {
             connectionInfos = `{
 				"binaryType": "${this.socket.binaryType}",
 				"bufferedAmount": "${this.socket.bufferedAmount}",
-				"extensions ": "${this.socket.extensions}",
+				"extensions": "${this.socket.extensions}",
 				"protocol": "${this.socket.protocol}",
 				"readyState": "${this.socket.readyState}",
 				"url": "${this.socket.url}"
 			}`;
         }
         else {
-            connectionInfos = `{"error": "The socket is undefined you potato. Did you open one ?"}`;
+            connectionInfos = '{"error": "The socket is undefined you potato. Did you open one ?"}';
         }
         return connectionInfos;
     }
     addResult(text, sender) {
-        text = JSON.parse(text);
-        text = JSON.stringify(text, null, 2);
-        this.jsonDestinationContainer.insertAdjacentHTML('afterbegin', '<pre onclick="this.classList.toggle(`open`);" class="result-' + sender + '">' + text + '</pre>');
+        let toWrite = JSON.parse(text);
+        toWrite = JSON.stringify(toWrite, null, 2);
+        this.jsonDestinationContainer.insertAdjacentHTML('afterbegin', `<pre onclick="this.classList.toggle('open');" class="result-${sender}">${toWrite}</pre>`);
     }
 }
 export { KrakenApi };
