@@ -7,7 +7,7 @@ You can see it in action [on the project's GitHub page](https://picleb.github.io
 
 ## Technologies used
 - NPM as package manager
-- Grunt as task runner
+- NPM scripts to watch and build assets
 - TypeScript as JavaScript superset
 - Sass as CSS pre-processor
 - Webpack for handling JavaScript's uglifying.
@@ -15,9 +15,8 @@ You can see it in action [on the project's GitHub page](https://picleb.github.io
 
 ## Developer's informations
 Run `npm install` to install development dependencies
-Run `grunt dev` to launch grunt with the watch task (watch for TypeScript and Sass changes)
-Run `grunt prod` to build assets for production use (and minify CSS)
-Run `npx webpack` to build JavaScript for production
+Run `npm run watch` to start watch tasks (watch for TypeScript, JavaScript and Sass changes). Builds development assets.
+Run `npm run prod` to build assets for production use
 
 TypeScript documentation: https://www.typescriptlang.org/docs/home.html
 Kraken WebSockets API documentation: https://docs.kraken.com/websockets-beta
