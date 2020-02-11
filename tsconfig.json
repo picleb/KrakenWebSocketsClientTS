@@ -1,10 +1,10 @@
 {
 	"compilerOptions": {
 		"allowJs": true,
-		"target": "ES2017",
+		"target": "es2017",
 		"alwaysStrict": true,
-		"module": "ES2015",
-		"lib": ["dom", "ES2017"],
+		"module": "es2015",
+		"lib": ["dom", "es2017"],
 		"outDir": "public/js",
 		"sourceMap": false,
 		"removeComments": true,

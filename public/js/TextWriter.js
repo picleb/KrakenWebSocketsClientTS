@@ -7,7 +7,6 @@ class TextWriter {
     }
     setDestination(destinationId) {
         this.textDestinationContainer = document.getElementById(destinationId);
-        console.log(`TextWriter destination is set to ${destinationId}`);
     }
     getTargetElement() {
         let targetElement = this.textDestinationContainer;

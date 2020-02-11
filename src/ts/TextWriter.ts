@@ -20,7 +20,6 @@ class TextWriter{
 	 */
 	private setDestination(destinationId: string): void {
 		this.textDestinationContainer = document.getElementById(destinationId);
-		console.log(`TextWriter destination is set to ${destinationId}`);
 	}
 
 	/**
