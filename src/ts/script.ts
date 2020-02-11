@@ -34,5 +34,3 @@ window.onload = () => {
 
 	document.getElementById('terminal-form-command').addEventListener('submit', submitForm);
 };
-
-

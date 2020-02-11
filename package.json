@@ -1,18 +1,26 @@
 {
   "name": "KrakenWebSocketsClientTS",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Kraken WebSockets client for the beta API. In the browser, just for fun",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/picleb/KrakenWebSocketsClientTS.git"
   },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:typescript": "tsc --listEmittedFiles",
+    "build:webpack": "webpack --progress --display-error-details --mode='production'",
+    "build:sass": "node-sass --output-style compressed src/sass/ -o public/css",
+    "watch:typescript": "tsc --listEmittedFiles --watch",
+    "watch:webpack": "webpack --progress --display-error-details --mode='development' --watch",
+    "watch:sass": "node-sass --watch --error-bell src/sass/ -o public/css",
+    "watch": "npm run watch:typescript & npm run watch:webpack & npm run watch:sass",
+    "prod": "npm run build:typescript && npm run build:webpack && npm run build:sass"
+  },
   "devDependencies": {
-    "grunt": "latest",
-    "grunt-contrib-cssmin": "latest",
-    "grunt-contrib-watch": "latest",
-    "grunt-sass": "^3.1.0",
-    "grunt-ts": "^6.0.0-beta.22",
+    "node-sass": "^4.13.1",
+    "typescript": "^3.7.5",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   },

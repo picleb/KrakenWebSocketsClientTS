@@ -2,7 +2,7 @@ class TextWriter{
 	private textDestinationContainer: HTMLElement = undefined;
 	private animationDelay: number = 50;	//Sleep delay after writing a character during the animation
 	private htmlWrapperTag: string = 'p';	//HTML tag used to wrap characters during the animation
-	
+
 
 	/**
 	 * TextWriter's constructor

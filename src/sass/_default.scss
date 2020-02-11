@@ -1,6 +1,6 @@
-/************************
-* RESET CSS
-************************/
+/*
+ * RESET CSS
+ */
 *{margin:0;padding:0;box-sizing:border-box;}
 table{border-collapse:collapse;border-spacing:0}
 img{border:0}
@@ -29,9 +29,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 audio:not([controls]){display:none;height:0;}
 
-/**************************************
-* Default style and other properties
-**************************************/
+/*
+ * Default style and other properties
+ */
 html, body{
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	font-size: 100%;

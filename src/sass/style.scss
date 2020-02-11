@@ -1,15 +1,14 @@
 /*
-* CSS style file for "Kraken API WebSockets fun"
-* © 2020 Pierre Lebedel
-*/
+ * CSS style file for "Kraken WebSockets API"
+ * © 2020 Pierre Lebedel
+ */
 
 @import "colors";
 @import "default";
 
-/******************************
-* Propriétés communes
-*******************************/
-
+/*
+ * Page properties
+ */
 .grid-container {
 	display: grid;
 	grid-template-columns: 42% 58%;

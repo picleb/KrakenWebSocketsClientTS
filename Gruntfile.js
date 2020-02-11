@@ -64,9 +64,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks("grunt-ts");
-	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.registerTask('dev', ['watch']);
-	grunt.registerTask('prod', ['sass', 'cssmin', 'ts', 'uglify']);
+	grunt.registerTask('prod', ['sass', 'cssmin', 'ts']);
 }
