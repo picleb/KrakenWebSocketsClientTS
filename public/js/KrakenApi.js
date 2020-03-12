@@ -7,20 +7,20 @@ class KrakenApi {
         this.terminal = writer;
         this.jsonDestinationContainer = document.getElementById(jsonDestinationId);
     }
-    addEventsListener(self) {
+    addEventsListener() {
         this.socket.addEventListener('open', () => {
-            self.terminal.write('WebSockets connection opened');
+            this.terminal.write('WebSockets connection opened');
         });
         this.socket.addEventListener('message', event => {
-            self.messageReceived(event.data);
+            this.messageReceived(event.data);
         });
         this.socket.addEventListener('close', () => {
-            self.terminal.write('WebSockets connection closed');
+            this.terminal.write('WebSockets connection closed');
         });
         this.socket.addEventListener('error', event => {
             console.log('WebSocket Error:  ', event);
-            self.terminal.write('WebSocket Error', 0);
-            self.terminal.writeJson(event);
+            this.terminal.write('WebSocket Error', 0);
+            this.terminal.writeJson(event);
         });
     }
     messageReceived(data) {
@@ -68,7 +68,7 @@ class KrakenApi {
         else {
             this.terminal.write('Connecting to Kraken Websockets API...');
             this.socket = new WebSocket(this.socketUri);
-            this.addEventsListener(this);
+            this.addEventsListener();
         }
     }
     checkSocketOpen() {
